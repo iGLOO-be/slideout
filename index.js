@@ -63,6 +63,13 @@ function Slideout(options) {
   this._tolerance = parseInt(options.tolerance, 10) || 70;
   this._padding = parseInt(options.padding, 10) || 256;
 
+  // Provide options to specifiy selectors of elements with interactions.
+  if( typeof options.preventDrag === 'string' ) {
+    this._preventDrag = [ options.preventDrag ];
+  } else {
+    this._preventDrag = options.preventDrag || [];
+  }
+
   // Init touch events
   this._initTouchEvents();
 }
@@ -132,6 +139,17 @@ Slideout.prototype._setTransition = function() {
 };
 
 /**
+ * Returns true if drag must be prevented
+ */
+Slideout.prototype._isPreventDrag = function(eve) {
+  for (var i=0; i <= this._preventDrag.length; i++) {
+    if (eve.target.matches(this._preventDrag[i])) {
+      return true;
+    }
+  }
+};
+
+/**
  * Initializes touch event
  */
 Slideout.prototype._initTouchEvents = function() {
@@ -192,7 +210,7 @@ Slideout.prototype._initTouchEvents = function() {
    */
   this.panel.addEventListener(touch.move, function(eve) {
 
-    if (scrolling || self._preventOpen) { return; }
+    if (scrolling || self._preventOpen || self._isPreventDrag(eve)) { return; }
 
     var dif_x = eve.touches[0].clientX - self._startOffsetX;
     var translateX = self._currentOffsetX = dif_x;
