@@ -51,6 +51,7 @@ function Slideout(options) {
   // Sets panel
   this.panel = options.panel;
   this.menu = options.menu;
+  this.header = options.header;
 
   // Sets  classnames
   this.panel.className += ' slideout-panel';
@@ -77,6 +78,7 @@ Slideout.prototype.open = function() {
   this._opened = true;
   setTimeout(function() {
     self.panel.style.transition = self.panel.style['-webkit-transition'] = '';
+    if (self.header) self.header.style.transition = self.header.style['-webkit-transition'] = '';
   }, this._duration + 50);
   return this;
 };
@@ -93,6 +95,7 @@ Slideout.prototype.close = function() {
   setTimeout(function() {
     html.className = html.className.replace(/ slideout-open/, '');
     self.panel.style.transition = self.panel.style['-webkit-transition'] = '';
+    if (self.header) self.header.style.transition = self.header.style['-webkit-transition'] = '';
   }, this._duration + 50);
   return this;
 };
@@ -117,6 +120,7 @@ Slideout.prototype.isOpen = function() {
 Slideout.prototype._translateXTo = function(translateX) {
   this._currentOffsetX = translateX;
   this.panel.style[prefix + 'transform'] = this.panel.style.transform = 'translate3d(' + translateX + 'px, 0, 0)';
+  if (this.header) this.header.style[prefix + 'transform'] = this.header.style.transform = 'translate3d(' + translateX + 'px, 0, 0)';
 };
 
 /**
@@ -124,6 +128,7 @@ Slideout.prototype._translateXTo = function(translateX) {
  */
 Slideout.prototype._setTransition = function() {
   this.panel.style[prefix + 'transition'] = this.panel.style.transition = prefix + 'transform ' + this._duration + 'ms ' + this._fx;
+  if (this.header) this.header.style[prefix + 'transition'] = this.header.style.transition = prefix + 'transform ' + this._duration + 'ms ' + this._fx;
 };
 
 /**
@@ -209,6 +214,7 @@ Slideout.prototype._initTouchEvents = function() {
       }
 
       self.panel.style[prefix + 'transform'] = self.panel.style.transform = 'translate3d(' + translateX + 'px, 0, 0)';
+      if (self.header) self.header.style[prefix + 'transform'] = self.header.style.transform = 'translate3d(' + translateX + 'px, 0, 0)';
 
       self._moved = true;
     }
