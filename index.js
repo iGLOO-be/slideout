@@ -184,7 +184,7 @@ Slideout.prototype._initTouchEvents = function() {
     self._moved = false;
     self._opening = false;
     self._startOffsetX = eve.touches[0].pageX;
-    self._preventOpen = (!self.isOpen() && self.menu.clientWidth !== 0);
+    self._preventOpen = false;
   });
 
   /**
